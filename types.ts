@@ -160,3 +160,32 @@ export interface View {
         productContext?: Item | CommunityPost;
     };
 }
+
+export interface DataContextType {
+    users: User[];
+    stores: Store[];
+    communityPosts: CommunityPost[];
+    chats: ChatSession[];
+    notifications: Notification[];
+    publicServices: PublicService[];
+    
+    // Actions
+    updateUserProfile: (updatedUser: User) => void;
+    updateUserInterests: (interests: string[]) => void;
+    addStore: (store: Store) => void;
+    addItemToStore: (storeId: string, item: Item) => void;
+    addCommunityPost: (postData: Omit<CommunityPost, 'id' | 'userId' | 'userName' | 'timestamp' | 'likes' | 'comments'>) => void;
+    toggleCommunityPostLike: (postId: string) => void;
+    addCommentToCommunityPost: (postId: string, commentText: string, imageUrl?: string) => void;
+    addReplyToComment: (postId: string, parentCommentId: string, replyText: string, replyingTo: string, imageUrl?: string) => void;
+    toggleFollow: (targetUserId: string) => void;
+    sendMessage: (partnerId: string, text: string, productContext?: Item | CommunityPost) => void;
+    markMessagesAsRead: (partnerId: string) => void;
+    markNotificationsAsRead: () => void;
+    addReviewToStore: (storeId: string, review: Review) => void;
+    addReviewToItem: (storeId: string, itemId: string, review: Review) => void;
+    addPublicService: (service: PublicService) => void;
+    addReviewToPublicService: (serviceId: string, review: Review) => void;
+    deleteItemFromStore: (storeId: string, itemId: string) => void;
+    updateItemInStore: (storeId: string, updatedItem: Item) => void;
+}

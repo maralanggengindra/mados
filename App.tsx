@@ -1,7 +1,7 @@
 import React, { useState, createContext, useMemo } from 'react';
 import { AuthView } from './components/AuthView';
 import { MainView } from './components/MainView';
-import { User, Store, CommunityPost, ChatSession, Notification, PublicService, Item, ChatMessage, Review, CommunityPostComment } from './types';
+import { User, Store, CommunityPost, ChatSession, Notification, PublicService, Item, ChatMessage, Review, CommunityPostComment, DataContextType } from './types';
 import { MOCK_USERS, MOCK_STORES, MOCK_COMMUNITY_POSTS, MOCK_CHATS, MOCK_NOTIFICATIONS } from './constants';
 import { Toast } from './components/common/Toast';
 
@@ -17,34 +17,6 @@ interface UserContextType {
     user: User | null;
     setUser: (user: User | null) => void;
 }
-
-interface DataContextType {
-    users: User[];
-    stores: Store[];
-    communityPosts: CommunityPost[];
-    chats: ChatSession[];
-    notifications: Notification[];
-    publicServices: PublicService[];
-    
-    // Actions
-    updateUserProfile: (updatedUser: User) => void;
-    updateUserInterests: (interests: string[]) => void;
-    addStore: (store: Store) => void;
-    addItemToStore: (storeId: string, item: Item) => void;
-    addCommunityPost: (postData: Omit<CommunityPost, 'id' | 'userId' | 'userName' | 'timestamp' | 'likes' | 'comments'>) => void;
-    toggleCommunityPostLike: (postId: string) => void;
-    addCommentToCommunityPost: (postId: string, commentText: string, imageUrl?: string) => void;
-    addReplyToComment: (postId: string, parentCommentId: string, replyText: string, replyingTo: string, imageUrl?: string) => void;
-    toggleFollow: (targetUserId: string) => void;
-    sendMessage: (partnerId: string, text: string, productContext?: Item | CommunityPost) => void;
-    markMessagesAsRead: (partnerId: string) => void;
-    markNotificationsAsRead: () => void;
-    addReviewToStore: (storeId: string, review: Review) => void;
-    addReviewToItem: (storeId: string, itemId: string, review: Review) => void;
-    addPublicService: (service: PublicService) => void;
-    addReviewToPublicService: (serviceId: string, review: Review) => void;
-}
-
 
 export const UserContext = createContext<UserContextType>({ user: null, setUser: () => {} });
 export const DataContext = createContext<DataContextType>({} as DataContextType);
@@ -264,6 +236,24 @@ const App: React.FC = () => {
         addReviewToPublicService: (serviceId: string, review: Review) => {
             setPublicServices(prev => prev.map(s => s.id === serviceId ? { ...s, reviews: [review, ...s.reviews] } : s));
             showToast('Ulasan Anda untuk layanan publik telah ditambahkan.');
+        },
+        deleteItemFromStore: (storeId, itemId) => {
+            setStores(prev => prev.map(s => {
+                if (s.id === storeId) {
+                    return { ...s, items: s.items.filter(i => i.id !== itemId) };
+                }
+                return s;
+            }));
+            showToast('Produk berhasil dihapus.');
+        },
+        updateItemInStore: (storeId, updatedItem) => {
+            setStores(prev => prev.map(s => {
+                if (s.id === storeId) {
+                    return { ...s, items: s.items.map(i => i.id === updatedItem.id ? updatedItem : i) };
+                }
+                return s;
+            }));
+            showToast('Produk berhasil diperbarui.');
         }
     }), [users, stores, communityPosts, chats, notifications, publicServices, user]);
 
