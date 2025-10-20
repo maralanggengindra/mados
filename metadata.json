@@ -1,0 +1,7 @@
+{
+  "name": "Mados",
+  "description": "A hyperlocal online shopping application that connects users with the nearest stores and services. Features include image-based product search, location-restricted reviews for stores, a map for finding local stores, a community marketplace for used goods, and a dedicated dashboard for sellers.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
