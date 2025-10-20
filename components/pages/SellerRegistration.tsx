@@ -64,7 +64,8 @@ const RegisterSellerView: React.FC<{ onRegister: (data: PendingStoreData) => voi
     );
 };
 
-const PendingApprovalView: React.FC<{ onSimulateApproval: () => void, onCancel: () => void }> = ({ onSimulateApproval, onCancel }) => {
+const PendingApprovalView: React.FC<{ onSimulateApproval: () => void, onCancel: () => void }> = ({ onSimulateApproval, onCancel }) => 
+{
     return (
         <div className="p-6 text-center flex-grow flex flex-col justify-center items-center">
             <h1 className="text-2xl font-bold mb-4">Pendaftaran Sedang Ditinjau</h1>
